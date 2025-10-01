@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 
 export default function GradeFunction() {
@@ -8,6 +6,36 @@ export default function GradeFunction() {
 
   const subjects = ["தமிழ்", "ஆங்கிலம்", "கணிதம்", "அறிவியல்", "சமூகவியல்"];
   const exams = ["பருவம் 1", "பருவம் 2", "பருவம் 3"];
+
+  // 🔹 Grade calculation for FA
+  const getFAGrade = (mark) => {
+    const m = Number(mark);
+    if (m >= 37 && m <= 40) return "A1";
+    if (m >= 33 && m <= 36) return "A2";
+    if (m >= 29 && m <= 32) return "B1";
+    if (m >= 25 && m <= 28) return "B2";
+    if (m >= 21 && m <= 24) return "C1";
+    if (m >= 17 && m <= 20) return "C2";
+    if (m >= 13 && m <= 16) return "D";
+    if (m >= 9 && m <= 12) return "E1";
+    if (m >= 1 && m <= 8) return "E2";
+    return "";
+  };
+
+  // 🔹 Grade calculation for SA
+  const getSAGrade = (mark) => {
+    const m = Number(mark);
+    if (m >= 55 && m <= 60) return "A1";
+    if (m >= 49 && m <= 54) return "A2";
+    if (m >= 43 && m <= 48) return "B1";
+    if (m >= 37 && m <= 42) return "B2";
+    if (m >= 31 && m <= 36) return "C1";
+    if (m >= 25 && m <= 30) return "C2";
+    if (m >= 19 && m <= 24) return "D";
+    if (m >= 13 && m <= 18) return "E1";
+    if (m >= 1 && m <= 12) return "E2";
+    return "";
+  };
 
   const handleNumStudentsChange = (e) => {
     const value = parseInt(e.target.value) || 0;
@@ -20,7 +48,7 @@ export default function GradeFunction() {
         roll: "",
         marks: subjects.reduce((acc, subject) => {
           acc[subject] = exams.reduce((examAcc, exam) => {
-            examAcc[exam] = { fa: "", sa: "", total: "" };
+            examAcc[exam] = { fa: "", sa: "", total: "", faGrade: "", saGrade: "" };
             return examAcc;
           }, {});
           return acc;
@@ -45,6 +73,10 @@ export default function GradeFunction() {
     const fa = parseFloat(newStudents[index].marks[subject][exam].fa) || 0;
     const sa = parseFloat(newStudents[index].marks[subject][exam].sa) || 0;
     newStudents[index].marks[subject][exam].total = fa + sa;
+
+    // 🔹 Auto-grade update
+    newStudents[index].marks[subject][exam].faGrade = getFAGrade(fa);
+    newStudents[index].marks[subject][exam].saGrade = getSAGrade(sa);
 
     setStudents(newStudents);
   };
@@ -88,7 +120,7 @@ export default function GradeFunction() {
                 {subjects.map((subject) => (
                   <th
                     key={subject}
-                    colSpan={exams.length * 3}
+                    colSpan={exams.length * 5}
                     className="border px-4 py-2"
                   >
                     {subject}
@@ -109,7 +141,7 @@ export default function GradeFunction() {
                   exams.map((exam) => (
                     <th
                       key={`${subject}-${exam}`}
-                      colSpan="3"
+                      colSpan="5"
                       className="border px-2 py-1"
                     >
                       {exam}
@@ -124,7 +156,9 @@ export default function GradeFunction() {
                   exams.map((exam) => (
                     <React.Fragment key={`${subject}-${exam}-fa`}>
                       <th className="border px-2 py-1">FA (40)</th>
+                      <th className="border px-2 py-1">FA Grade</th>
                       <th className="border px-2 py-1">SA (60)</th>
+                      <th className="border px-2 py-1">SA Grade</th>
                       <th className="border px-2 py-1">மொத்தம்</th>
                     </React.Fragment>
                   ))
@@ -161,11 +195,12 @@ export default function GradeFunction() {
                   {subjects.map((subject) =>
                     exams.map((exam) => (
                       <React.Fragment key={`${subject}-${exam}`}>
+                        {/* FA */}
                         <td className="border px-1 py-1">
                           <input
                             type="number"
                             max="40"
-                            className="w-12 p-1 border rounded text-sm"
+                            className="w-14 p-1 border rounded text-sm"
                             value={student.marks[subject][exam].fa}
                             onChange={(e) =>
                               handleMarkChange(
@@ -178,11 +213,16 @@ export default function GradeFunction() {
                             }
                           />
                         </td>
+                        <td className="border px-1 py-1 bg-gray-50">
+                          {student.marks[subject][exam].faGrade}
+                        </td>
+
+                        {/* SA */}
                         <td className="border px-1 py-1">
                           <input
                             type="number"
                             max="60"
-                            className="w-12 p-1 border rounded text-sm"
+                            className="w-14 p-1 border rounded text-sm"
                             value={student.marks[subject][exam].sa}
                             onChange={(e) =>
                               handleMarkChange(
@@ -196,6 +236,11 @@ export default function GradeFunction() {
                           />
                         </td>
                         <td className="border px-1 py-1 bg-gray-50">
+                          {student.marks[subject][exam].saGrade}
+                        </td>
+
+                        {/* Total */}
+                        <td className="border px-1 py-1 bg-gray-100">
                           {student.marks[subject][exam].total}
                         </td>
                       </React.Fragment>
