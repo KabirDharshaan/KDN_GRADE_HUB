@@ -1,5 +1,7 @@
 import React from "react";
-
+import GradeI from "../calculate/GradeI";
+import GradeII from "../calculate/GradeII"
+import GradeIII from "../calculate/GradeIII"
 export default function Calculate() {
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
@@ -12,50 +14,19 @@ export default function Calculate() {
         </div>
       </section>
 
-      {/* Grade 6 & 7 */}
+      {/* Grade 6 & 7 — replaced with GradeI component */}
       <section id="grade-6-7" className="container mx-auto px-4 py-10">
-        <h3 className="text-2xl font-bold mb-4 text-yellow-900">Grade 6 & 7</h3>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <p className="mb-4">Enter marks for Grade 6 or 7 students.</p>
-          <form className="space-y-4">
-            <input type="text" placeholder="Student Name" className="w-full p-2 border rounded"/>
-            <input type="number" placeholder="Marks" className="w-full p-2 border rounded"/>
-            <button type="submit" className="bg-yellow-900 text-white px-4 py-2 rounded hover:bg-yellow-800">
-              Calculate
-            </button>
-          </form>
-        </div>
+        <GradeI />
       </section>
 
-      {/* Grade 8–10 */}
-      <section id="grade-8-10" className="container mx-auto px-4 py-10">
-        <h3 className="text-2xl font-bold mb-4 text-yellow-900">Grade 8, 9 & 10</h3>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <p className="mb-4">Enter marks for Grade 8, 9, or 10 students.</p>
-          <form className="space-y-4">
-            <input type="text" placeholder="Student Name" className="w-full p-2 border rounded"/>
-            <input type="number" placeholder="Marks" className="w-full p-2 border rounded"/>
-            <button type="submit" className="bg-yellow-900 text-white px-4 py-2 rounded hover:bg-yellow-800">
-              Calculate
-            </button>
-          </form>
-        </div>
+      <section id="grade-8-9-10" className="container mx-auto px-4 py-10">
+        <GradeII />
       </section>
 
-      {/* Grade 11–12 */}
-      <section id="grade-11-12" className="container mx-auto px-4 py-10">
-        <h3 className="text-2xl font-bold mb-4 text-yellow-900">Grade 11 & 12</h3>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <p className="mb-4">Enter marks for Grade 11 or 12 students.</p>
-          <form className="space-y-4">
-            <input type="text" placeholder="Student Name" className="w-full p-2 border rounded"/>
-            <input type="number" placeholder="Marks" className="w-full p-2 border rounded"/>
-            <button type="submit" className="bg-yellow-900 text-white px-4 py-2 rounded hover:bg-yellow-800">
-              Calculate
-            </button>
-          </form>
-        </div>
-      </section>
+
+       <section id="grade-11-12" className="container mx-auto px-4 py-10">
+        <GradeIII />
+       </section>
 
     </div>
   );
