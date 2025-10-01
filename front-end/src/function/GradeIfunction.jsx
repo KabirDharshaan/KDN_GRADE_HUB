@@ -1,4 +1,6 @@
 
+
+
 import React, { useState } from "react";
 
 export default function GradeFunction() {
@@ -156,148 +158,133 @@ export default function GradeFunction() {
 
       {numStudents > 0 && (
         <form onSubmit={handleSubmit}>
-          <table className="table-auto border-collapse w-full text-center text-sm">
-            <thead>
-              {/* Header Row 1 */}
-              <tr className="bg-yellow-200">
-                <th rowSpan="3" className="border px-4 py-2 w-32">
-                  வரிசை எண்
-                </th>
-                <th rowSpan="3" className="border px-4 py-2 w-48">
-                  மாணவர் பெயர்
-                </th>
+          {students.map((student, index) => (
+            <div
+              key={index}
+              className="mb-10 border border-yellow-300 rounded-lg p-4 bg-yellow-50"
+            >
+              <div className="flex gap-4 mb-4">
+                <input
+                  type="text"
+                  className="w-20 p-2 border rounded text-center"
+                  placeholder="வரிசை எண்"
+                  value={student.roll}
+                  onChange={(e) => handleInputChange(index, "roll", e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="flex-1 p-2 border rounded"
+                  placeholder="மாணவர் பெயர்"
+                  value={student.name}
+                  onChange={(e) => handleInputChange(index, "name", e.target.value)}
+                />
+              </div>
 
-                {subjects.map((subject) => (
-                  <th key={subject} colSpan={exams.length * 6 + 2} className="border px-4 py-2">
-                    {subject}
-                  </th>
-                ))}
+              {/* Each subject in its own section */}
+              {subjects.map((subject) => (
+                <div
+                  key={subject}
+                  className="mb-6 border rounded-lg p-3 bg-white shadow-sm"
+                >
+                  <h3 className="font-bold text-lg text-yellow-800 mb-2">{subject}</h3>
 
-                <th rowSpan="3" className="border px-4 py-2 w-20">
-                  மொத்தம்
-                </th>
-                <th rowSpan="3" className="border px-4 py-2 w-24">
-                  சதவீதம் (%)
-                </th>
-              </tr>
-
-              {/* Header Row 2 */}
-              <tr className="bg-yellow-100">
-                {subjects.map((subject) => (
-                  <React.Fragment key={subject}>
-                    {exams.map((exam) => (
-                      <th key={`${subject}-${exam}`} colSpan="6" className="border px-2 py-1">
-                        {exam}
-                      </th>
-                    ))}
-                    <th className="border px-2 py-1">மொத்தம்</th>
-                    <th className="border px-2 py-1">சராசரி</th>
-                  </React.Fragment>
-                ))}
-              </tr>
-
-              {/* Header Row 3 */}
-              <tr className="bg-yellow-50">
-                {subjects.map((subject) =>
-                  exams.map((exam) => (
-                    <React.Fragment key={`${subject}-${exam}`}>
-                      <th className="border px-2 py-1">FA (40)</th>
-                      <th className="border px-2 py-1">FA Grade</th>
-                      <th className="border px-2 py-1">SA (60)</th>
-                      <th className="border px-2 py-1">SA Grade</th>
-                      <th className="border px-2 py-1">மொத்தம் (100)</th>
-                      <th className="border px-2 py-1">மொத்தம் Grade</th>
-                    </React.Fragment>
-                  ))
-                )}
-                {subjects.map(() => (
-                  <React.Fragment key={`extra-${Math.random()}`}>
-                    <th></th>
-                    <th></th>
-                  </React.Fragment>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {students.map((student, index) => (
-                <tr key={index} className="hover:bg-yellow-50">
-                  <td className="border px-2 py-1">
-                    <input
-                      type="text"
-                      className="w-16 p-1 border rounded text-center"
-                      placeholder="எண்"
-                      value={student.roll}
-                      onChange={(e) => handleInputChange(index, "roll", e.target.value)}
-                    />
-                  </td>
-                  <td className="border px-2 py-1">
-                    <input
-                      type="text"
-                      className="w-full p-1 border rounded"
-                      placeholder="மாணவர் பெயர்"
-                      value={student.name}
-                      onChange={(e) => handleInputChange(index, "name", e.target.value)}
-                    />
-                  </td>
-
-                  {subjects.map((subject) => (
-                    <React.Fragment key={subject}>
+                  <table className="table-auto border-collapse w-full text-center text-sm">
+                    <thead>
+                      <tr className="bg-yellow-100">
+                        <th className="border px-2 py-1">பருவம்</th>
+                        <th className="border px-2 py-1">FA (40)</th>
+                        <th className="border px-2 py-1">FA Grade</th>
+                        <th className="border px-2 py-1">SA (60)</th>
+                        <th className="border px-2 py-1">SA Grade</th>
+                        <th className="border px-2 py-1">மொத்தம் (100)</th>
+                        <th className="border px-2 py-1">மொத்தம் Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                       {exams.map((exam) => (
-                        <React.Fragment key={`${subject}-${exam}`}>
-                          <td className="border px-1 py-1">
+                        <tr
+                          key={`${subject}-${exam}`}
+                          className="hover:bg-yellow-50"
+                        >
+                          <td className="border px-2 py-1">{exam}</td>
+
+                          <td className="border px-2 py-1">
                             <input
                               type="number"
                               max="40"
-                              className="w-14 p-1 border rounded text-sm"
+                              className="w-16 p-1 border rounded text-center"
                               value={student.marks[subject][exam].fa}
                               onChange={(e) =>
-                                handleMarkChange(index, subject, exam, "fa", e.target.value)
+                                handleMarkChange(
+                                  index,
+                                  subject,
+                                  exam,
+                                  "fa",
+                                  e.target.value
+                                )
                               }
                             />
                           </td>
-                          <td className="border px-1 py-1 bg-gray-50">
+                          <td className="border px-2 py-1 bg-gray-50">
                             {student.marks[subject][exam].faGrade}
                           </td>
-                          <td className="border px-1 py-1">
+
+                          <td className="border px-2 py-1">
                             <input
                               type="number"
                               max="60"
-                              className="w-14 p-1 border rounded text-sm"
+                              className="w-16 p-1 border rounded text-center"
                               value={student.marks[subject][exam].sa}
                               onChange={(e) =>
-                                handleMarkChange(index, subject, exam, "sa", e.target.value)
+                                handleMarkChange(
+                                  index,
+                                  subject,
+                                  exam,
+                                  "sa",
+                                  e.target.value
+                                )
                               }
                             />
                           </td>
-                          <td className="border px-1 py-1 bg-gray-50">
+                          <td className="border px-2 py-1 bg-gray-50">
                             {student.marks[subject][exam].saGrade}
                           </td>
-                          <td className="border px-1 py-1 bg-gray-100">
+
+                          <td className="border px-2 py-1 bg-gray-100">
                             {student.marks[subject][exam].total}
                           </td>
-                          <td className="border px-1 py-1 bg-gray-100">
+                          <td className="border px-2 py-1 bg-gray-100">
                             {student.marks[subject][exam].totalGrade}
                           </td>
-                        </React.Fragment>
+                        </tr>
                       ))}
-                      <td className="border px-2 py-1 bg-gray-100 font-semibold">
-                        {student.marks[subject].overallTotal}
-                      </td>
-                      <td className="border px-2 py-1 bg-gray-100 font-semibold">
-                        {student.marks[subject].overallAverage}
-                      </td>
-                    </React.Fragment>
-                  ))}
 
-                  <td className="border px-2 py-1 bg-gray-200 font-bold">{student.total}</td>
-                  <td className="border px-2 py-1 bg-gray-200 font-bold">
-                    {student.percentage}%
-                  </td>
-                </tr>
+                      {/* Subject total row */}
+                      <tr className="bg-yellow-50 font-semibold">
+                        <td className="border px-2 py-1">மொத்தம்</td>
+                        <td colSpan="3" className="border px-2 py-1 text-right">
+                          மொத்தம்:
+                        </td>
+                        <td className="border px-2 py-1">
+                          {student.marks[subject].overallTotal}
+                        </td>
+                        <td className="border px-2 py-1">சராசரி:</td>
+                        <td className="border px-2 py-1">
+                          {student.marks[subject].overallAverage}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               ))}
-            </tbody>
-          </table>
+
+              {/* Student total & percentage */}
+              <div className="text-right font-bold text-yellow-900">
+                <p>மொத்த மதிப்பெண்: {student.total}</p>
+                <p>சதவீதம்: {student.percentage}%</p>
+              </div>
+            </div>
+          ))}
 
           <button
             type="submit"
@@ -310,6 +297,3 @@ export default function GradeFunction() {
     </div>
   );
 }
-
-
-
