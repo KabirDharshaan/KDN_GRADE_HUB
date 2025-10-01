@@ -6,7 +6,7 @@ export default function Calculate() {
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
 
-      {/* Page Title */}
+    
       <section className="bg-gradient-to-r from-yellow-800 to-yellow-900 text-white py-8">
         <div className="container mx-auto text-center px-4">
           <h2 className="text-3xl font-bold">Grade Calculation</h2>
@@ -14,7 +14,7 @@ export default function Calculate() {
         </div>
       </section>
 
-      {/* Grade 6 & 7 — replaced with GradeI component */}
+      
       <section id="grade-6-7" className="container mx-auto px-4 py-10">
         <GradeI />
       </section>
