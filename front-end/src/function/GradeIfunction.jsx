@@ -7,7 +7,7 @@ export default function GradeFunction() {
   const subjects = ["தமிழ்", "ஆங்கிலம்", "கணிதம்", "அறிவியல்", "சமூகவியல்"];
   const exams = ["பருவம் 1", "பருவம் 2", "பருவம் 3"];
 
-  // 🔹 Grade calculation for FA
+  // 🔹 Grade calculation for FA (out of 40)
   const getFAGrade = (mark) => {
     const m = Number(mark);
     if (m >= 37 && m <= 40) return "A1";
@@ -22,7 +22,7 @@ export default function GradeFunction() {
     return "";
   };
 
-  // 🔹 Grade calculation for SA
+  // 🔹 Grade calculation for SA (out of 60)
   const getSAGrade = (mark) => {
     const m = Number(mark);
     if (m >= 55 && m <= 60) return "A1";
@@ -37,6 +37,21 @@ export default function GradeFunction() {
     return "";
   };
 
+  // 🔹 Grade calculation for TOTAL (FA + SA out of 100)
+  const getTotalGrade = (mark) => {
+    const m = Number(mark);
+    if (m >= 91 && m <= 100) return "A1";
+    if (m >= 81 && m <= 90) return "A2";
+    if (m >= 71 && m <= 80) return "B1";
+    if (m >= 61 && m <= 70) return "B2";
+    if (m >= 51 && m <= 60) return "C1";
+    if (m >= 41 && m <= 50) return "C2";
+    if (m >= 33 && m <= 40) return "D";
+    if (m >= 21 && m <= 32) return "E1";
+    if (m >= 1 && m <= 20) return "E2";
+    return "";
+  };
+
   const handleNumStudentsChange = (e) => {
     const value = parseInt(e.target.value) || 0;
     setNumStudents(value);
@@ -48,7 +63,14 @@ export default function GradeFunction() {
         roll: "",
         marks: subjects.reduce((acc, subject) => {
           acc[subject] = exams.reduce((examAcc, exam) => {
-            examAcc[exam] = { fa: "", sa: "", total: "", faGrade: "", saGrade: "" };
+            examAcc[exam] = {
+              fa: "",
+              sa: "",
+              total: "",
+              faGrade: "",
+              saGrade: "",
+              totalGrade: "",
+            };
             return examAcc;
           }, {});
           return acc;
@@ -72,11 +94,14 @@ export default function GradeFunction() {
 
     const fa = parseFloat(newStudents[index].marks[subject][exam].fa) || 0;
     const sa = parseFloat(newStudents[index].marks[subject][exam].sa) || 0;
-    newStudents[index].marks[subject][exam].total = fa + sa;
+    const total = fa + sa;
+
+    newStudents[index].marks[subject][exam].total = total;
 
     // 🔹 Auto-grade update
     newStudents[index].marks[subject][exam].faGrade = getFAGrade(fa);
     newStudents[index].marks[subject][exam].saGrade = getSAGrade(sa);
+    newStudents[index].marks[subject][exam].totalGrade = getTotalGrade(total);
 
     setStudents(newStudents);
   };
@@ -120,7 +145,7 @@ export default function GradeFunction() {
                 {subjects.map((subject) => (
                   <th
                     key={subject}
-                    colSpan={exams.length * 5}
+                    colSpan={exams.length * 6}
                     className="border px-4 py-2"
                   >
                     {subject}
@@ -141,7 +166,7 @@ export default function GradeFunction() {
                   exams.map((exam) => (
                     <th
                       key={`${subject}-${exam}`}
-                      colSpan="5"
+                      colSpan="6"
                       className="border px-2 py-1"
                     >
                       {exam}
@@ -159,7 +184,8 @@ export default function GradeFunction() {
                       <th className="border px-2 py-1">FA Grade</th>
                       <th className="border px-2 py-1">SA (60)</th>
                       <th className="border px-2 py-1">SA Grade</th>
-                      <th className="border px-2 py-1">மொத்தம்</th>
+                      <th className="border px-2 py-1">மொத்தம் (100)</th>
+                      <th className="border px-2 py-1">மொத்தம் Grade</th>
                     </React.Fragment>
                   ))
                 )}
@@ -239,9 +265,12 @@ export default function GradeFunction() {
                           {student.marks[subject][exam].saGrade}
                         </td>
 
-                        {/* Total */}
+                        {/* Total + Grade */}
                         <td className="border px-1 py-1 bg-gray-100">
                           {student.marks[subject][exam].total}
+                        </td>
+                        <td className="border px-1 py-1 bg-gray-100">
+                          {student.marks[subject][exam].totalGrade}
                         </td>
                       </React.Fragment>
                     ))
