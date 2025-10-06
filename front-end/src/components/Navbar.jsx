@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -15,13 +16,24 @@ export default function Navbar() {
         <nav>
           <ul className="flex space-x-6">
             <li>
-              <Link to="/" className="hover:text-gray-200">Home</Link>
+              <Link to="/" className="hover:text-gray-200">
+                Home
+              </Link>
             </li>
             <li>
-              <Link to="/calculate" className="hover:text-gray-200">Calculate</Link>
+              <Link to="/calculate" className="hover:text-gray-200">
+                Calculate
+              </Link>
             </li>
             <li>
-              <a href="#about" className="hover:text-gray-200">About</a>
+              <Link to="/login" className="hover:text-gray-200">
+                Login
+              </Link>
+            </li>
+            <li>
+              <a href="#about" className="hover:text-gray-200">
+                About
+              </a>
             </li>
           </ul>
         </nav>
