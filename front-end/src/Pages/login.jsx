@@ -1,6 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+
+
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import logo from "../assets/TN_G.jpeg";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,11 +33,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#4a2c18] to-[#2c1b10]">
       <div className="text-center mb-8">
-        <img
-          src={logo}
-          alt="Tamil Nadu Emblem"
-          className="w-20 mx-auto mb-3"
-        />
+        <img src={logo} alt="Tamil Nadu Emblem" className="w-20 mx-auto mb-3" />
         <h1 className="text-3xl font-bold text-yellow-200 tracking-wide">
           தமிழ்நாடு அரசு
         </h1>
