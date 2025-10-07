@@ -1,6 +1,11 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function GradeII({ grades = ["8", "9", "10"] }) {
+  const navigate = useNavigate();
+  const handleCalculateClick = () => {
+    navigate("/grade-function-ii"); 
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">Grades</h2>
@@ -22,6 +27,13 @@ export default function GradeII({ grades = ["8", "9", "10"] }) {
       <p className="mt-4 text-sm text-gray-500">
         You can pass different grade values via the <code>grades</code> prop.
       </p>
+
+      <button
+        onClick={handleCalculateClick}
+        className="w-full bg-yellow-900 text-white px-4 py-2 rounded hover:bg-yellow-800"
+      >
+        Calculate
+      </button>
     </div>
   );
 }

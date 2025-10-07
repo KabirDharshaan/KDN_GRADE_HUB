@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../assets/TN_G.jpeg";
 export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#4a2c18] to-[#2c1b10]">
       
       <div className="text-center mb-8">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/9/9e/TamilNadu_Emblem.png"
+          src={logo}
           alt="Tamil Nadu Emblem"
           className="w-20 mx-auto mb-3"
         />
