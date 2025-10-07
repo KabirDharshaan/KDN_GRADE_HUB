@@ -1,15 +1,20 @@
 
 
-import React, { useState } from "react";
+
+
+
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function GradeFunction() {
   const [numStudents, setNumStudents] = useState(0);
   const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const subjects = ["தமிழ்", "ஆங்கிலம்", "கணிதம்", "அறிவியல்", "சமூகவியல்"];
   const exams = ["பருவம் 1", "பருவம் 2", "பருவம் 3"];
 
-  // 🔹 Grade calculation for FA (out of 40)
   const getFAGrade = (m) => {
     m = Number(m);
     if (m >= 37) return "A1";
@@ -24,7 +29,6 @@ export default function GradeFunction() {
     return "";
   };
 
-  // 🔹 Grade calculation for SA (out of 60)
   const getSAGrade = (m) => {
     m = Number(m);
     if (m >= 55) return "A1";
@@ -39,7 +43,6 @@ export default function GradeFunction() {
     return "";
   };
 
-  // 🔹 Grade calculation for Total / Average (out of 100)
   const getTotalGrade = (m) => {
     m = Number(m);
     if (m >= 91) return "A1";
@@ -54,7 +57,6 @@ export default function GradeFunction() {
     return "";
   };
 
-  // 🔹 Initialize Students
   const handleNumStudentsChange = (e) => {
     const value = parseInt(e.target.value) || 0;
     setNumStudents(value);
@@ -107,19 +109,16 @@ export default function GradeFunction() {
     updated[studentIndex].marks[subject][exam].saGrade = getSAGrade(sa);
     updated[studentIndex].marks[subject][exam].totalGrade = getTotalGrade(total);
 
-    // Calculate subject totals
     const totalAll = exams.reduce(
       (sum, ex) => sum + (parseFloat(updated[studentIndex].marks[subject][ex].total) || 0),
       0
     );
     updated[studentIndex].marks[subject].overallTotal = totalAll;
 
-    // Average and Average Grade
     const avg = (totalAll / exams.length).toFixed(2);
     updated[studentIndex].marks[subject].average = avg;
     updated[studentIndex].marks[subject].averageGrade = getTotalGrade(avg);
 
-    // Calculate overall
     const overallTotal = subjects.reduce(
       (sum, sub) => sum + (updated[studentIndex].marks[sub].overallTotal || 0),
       0
@@ -130,11 +129,45 @@ export default function GradeFunction() {
     setStudents(updated);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Saved Data:", students);
-    alert("Marks saved successfully!");
+  const fetchGrades = async () => {
+    try {
+      const token = localStorage.getItem("token"); // JWT token from login
+      const res = await axios.get("http://localhost:5000/api/grades", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = res.data;
+      if (data.length) {
+        setStudents(data);
+        setNumStudents(data.length);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5000/api/grades",
+        { data: students },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Marks saved successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save marks.");
+    }
+  };
+
+  useEffect(() => {
+    fetchGrades();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="p-4 text-xs leading-tight">
@@ -177,7 +210,6 @@ export default function GradeFunction() {
                 />
               </div>
 
-              {/* SUBJECT TABLES */}
               {subjects.map((subject) => (
                 <div key={subject} className="mb-3">
                   <h3 className="font-bold text-yellow-800 text-sm mb-1">{subject}</h3>
