@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Calculate from "./Pages/Calculate";
 import GradeFunction from "./function/GradeIfunction";
 import GradeIfunctionII from "./function/GradelfunctionII";
+import GradeIVFunction from "./function/GradeIVfunction";
 import Login from "./Pages/login";
 import Signin from "./Pages/signin"; 
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/calculate" element={<Calculate />} />
         <Route path="/grade-function" element={<GradeFunction />} />
         <Route path="/grade-function-ii" element={<GradeIfunctionII />} />
+         <Route path="/grade-iv-function" element={<GradeIVFunction />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} /> 
       </Routes>

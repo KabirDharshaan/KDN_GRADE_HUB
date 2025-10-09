@@ -2,6 +2,7 @@ import React from "react";
 import GradeI from "../calculate/GradeI";
 import GradeII from "../calculate/GradeII";
 import GradeIII from "../calculate/GradeIII";
+import GradeIV from "../calculate/GradeIV";
 
 export default function Calculate() {
   return (
@@ -20,6 +21,20 @@ export default function Calculate() {
 
       {/* ===== MAIN CONTENT SECTIONS ===== */}
       <main className="max-w-6xl mx-auto py-12 px-6 space-y-16">
+        {/* Grade 4–5 Section */}
+        <section
+          id="grade-4-5"
+          className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border-l-8 border-yellow-900 p-8"
+        >
+          <h2 className="text-2xl font-bold text-yellow-900 mb-4">
+            📕 Grade 4 & 5
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Enter marks for all three terms — Quarterly (Q), Half-Yearly (H), and Annual (A).
+          </p>
+          <GradeIV />
+        </section>
+
         {/* Grade 6–7 Section */}
         <section
           id="grade-6-7"
@@ -31,7 +46,7 @@ export default function Calculate() {
           <p className="text-gray-600 mb-6">
             Enter marks for all three terms — Quarterly (Q), Half-Yearly (H), and Annual (A).
           </p>
-          <GradeI />
+          <GradeI/>
         </section>
 
         {/* Grade 8–10 Section */}
