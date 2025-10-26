@@ -139,7 +139,7 @@ export default function GradeFunction() {
   const fetchGrades = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/grades", {
+      const res = await axios.get("https://kdn-grade-hub.onrender.com/api/grades", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = res.data;
@@ -159,7 +159,7 @@ export default function GradeFunction() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/grades",
+        "https://kdn-grade-hub.onrender.com/api/grades",
         { data: students },
         { headers: { Authorization: `Bearer ${token}` } }
       );

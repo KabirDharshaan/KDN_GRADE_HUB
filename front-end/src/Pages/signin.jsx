@@ -12,7 +12,7 @@ export default function Signin() {
   const handleSignin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://kdn-grade-hub.onrender.com/api/auth/register", {
         username,
         email,
         password,
