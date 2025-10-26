@@ -1,5 +1,4 @@
 
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,12 +17,11 @@ export default function Login() {
         password,
       });
 
-      localStorage.setItem("token", res.data.token); // Save token
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // Save user details
+      // Save token and user details
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      alert("Login successful!");
-
-      // Redirect to Calculate page
+      // Directly redirect to Calculate page without alert
       navigate("/calculate");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");

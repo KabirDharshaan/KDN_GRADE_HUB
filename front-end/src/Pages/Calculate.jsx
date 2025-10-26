@@ -18,7 +18,7 @@ export default function Calculate() {
         </div>
       </header>
 
-      {/* ===== MAIN CONTENT SECTIONS ===== */}
+     
       <main className="max-w-6xl mx-auto py-12 px-6 space-y-16">
         {/* Grade 6–7 Section */}
         <section

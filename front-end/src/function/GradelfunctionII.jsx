@@ -1,7 +1,12 @@
+
+
 import React, { useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable"; // ✅ fixed import
+import * as XLSX from "xlsx";
 
 export default function Grade6and7MarkRegister() {
-  const subjects = ["தமிழ்", "ஆங்கிலம்", "கணிதம்", "அறிவியல்", "சமூகவியல்"];
+  const subjects = ["Tamil", "English", "Maths", "Science", "Social"];
   const terms = ["Q", "H", "A"];
 
   const getGrade = (score) => {
@@ -72,18 +77,83 @@ export default function Grade6and7MarkRegister() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("All Student Data:", students);
-    alert(`${students.length} மாணவர்களின் மதிப்பெண் பதிவு சேமிக்கப்பட்டது!`);
+    alert(`${students.length} students marks saved!`);
+  };
+
+  // Excel Download
+  const downloadExcel = () => {
+    const data = [];
+
+    students.forEach((s) => {
+      terms.forEach((term) => {
+        const row = {
+          "Admission No": s.admissionNo,
+          "Student Name": s.name,
+          "Exam No": s.examNo,
+          Term: term,
+        };
+        subjects.forEach((sub) => {
+          row[`${sub} Marks`] = s.marks[term][sub] || 0;
+        });
+        row["Total"] = s.totals[term];
+        row["Percentage"] = s.percentages[term];
+        row["Grade"] = getGrade(s.percentages[term]);
+        data.push(row);
+      });
+    });
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Marks");
+    XLSX.writeFile(wb, "Grade6and7Marks.xlsx");
+  };
+
+  // PDF Download - ✅ fixed
+  const downloadPDF = () => {
+    const doc = new jsPDF("l", "pt", "a4");
+    doc.setFontSize(10);
+
+    students.forEach((s, index) => {
+      // Student Header
+      doc.text(
+        `Student: ${s.name} | Admission No: ${s.admissionNo} | Exam No: ${s.examNo}`,
+        40,
+        30
+      );
+
+      const headers = [["Term", ...subjects, "Total", "Percentage", "Grade"]];
+      const rows = terms.map((term) => [
+        term,
+        ...subjects.map((sub) => Number(s.marks[term][sub]) || 0),
+        s.totals[term],
+        s.percentages[term],
+        getGrade(s.percentages[term]),
+      ]);
+
+      autoTable(doc, {
+        head: headers,
+        body: rows,
+        startY: 50,
+        styles: { fontSize: 8, halign: "center" },
+        headStyles: { fillColor: [255, 206, 84] },
+        theme: "grid",
+      });
+
+      if (index < students.length - 1) doc.addPage();
+    });
+
+    doc.save("Grade6and7Marks.pdf");
   };
 
   return (
     <div className="min-h-screen w-full bg-yellow-50 p-6 overflow-x-auto">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        6 & 7 ஆம் வகுப்பு - மூன்று தவணை மதிப்பெண் பதிவு (Q, H, A)
+        6 & 7 Grade - Marks Register (Q, H, A)
       </h2>
 
       <div className="flex justify-center items-center mb-6 gap-3">
         <label className="font-medium text-gray-700 text-lg">
-          மாணவர்கள் எண்ணிக்கை:
+          Number of Students:
         </label>
         <input
           type="number"
@@ -94,11 +164,31 @@ export default function Grade6and7MarkRegister() {
         />
       </div>
 
+      <div className="flex gap-2 justify-end mb-4">
+        <button
+          type="button"
+          onClick={downloadExcel}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Download Excel
+        </button>
+        <button
+          type="button"
+          onClick={downloadPDF}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Download PDF
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-10">
         {students.map((student, index) => (
-          <div key={index} className="border rounded-lg p-4 bg-white shadow-md">
+          <div
+            key={index}
+            className="border rounded-lg p-4 bg-white shadow-md"
+          >
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              மாணவர் {index + 1}
+              Student {index + 1}
             </h3>
 
             <div className="flex flex-wrap gap-3 justify-between mb-4">
@@ -132,28 +222,29 @@ export default function Grade6and7MarkRegister() {
             </div>
 
             {terms.map((term) => (
-              <div key={term} className="border rounded-md p-4 bg-gray-50 mb-4">
+              <div
+                key={term}
+                className="border rounded-md p-4 bg-gray-50 mb-4"
+              >
                 <h4 className="text-md font-semibold mb-3 text-gray-700">
                   {term === "Q"
-                    ? "முதல் பருவம் (Quarterly)"
+                    ? "Quarterly"
                     : term === "H"
-                    ? "இரண்டாம் பருவம் (Half-Yearly)"
-                    : "மூன்றாம் பருவம் (Annual)"}
+                    ? "Half-Yearly"
+                    : "Annual"}
                 </h4>
 
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse text-center text-sm">
                     <thead className="bg-yellow-100">
                       <tr>
-                        <th className="border p-2">பாடம்</th>
-                        {subjects.map((sub) => (
-                          <th key={sub} className="border p-2">
-                            {sub}
-                          </th>
-                        ))}
-                        <th className="border p-2">மொத்தம்</th>
-                        <th className="border p-2">சதவீதம்</th>
-                        <th className="border p-2">தரம்</th>
+                        {["Subject", ...subjects, "Total", "Percentage", "Grade"].map(
+                          (h) => (
+                            <th key={h} className="border p-2">
+                              {h}
+                            </th>
+                          )
+                        )}
                       </tr>
                     </thead>
                     <tbody>
@@ -166,23 +257,16 @@ export default function Grade6and7MarkRegister() {
                               max="100"
                               value={student.marks[term][sub]}
                               onChange={(e) =>
-                                handleMarkChange(
-                                  index,
-                                  term,
-                                  sub,
-                                  e.target.value
-                                )
+                                handleMarkChange(index, term, sub, e.target.value)
                               }
                               className="w-16 p-1 text-center border rounded"
                             />
                           </td>
                         ))}
-                        <td className="border p-2 font-semibold text-gray-700">
+                        <td className="border p-2 font-semibold">
                           {student.totals[term]}
                         </td>
-                        <td className="border p-2">
-                          {student.percentages[term]}%
-                        </td>
+                        <td className="border p-2">{student.percentages[term]}%</td>
                         <td className="border p-2">
                           {getGrade(student.percentages[term])}
                         </td>
@@ -200,7 +284,7 @@ export default function Grade6and7MarkRegister() {
             type="submit"
             className="mt-4 bg-yellow-700 text-white px-8 py-3 rounded-lg hover:bg-yellow-800 text-lg"
           >
-            சேமிக்கவும்
+            Save Marks
           </button>
         </div>
       </form>
