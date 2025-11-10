@@ -1,8 +1,8 @@
 import React from "react";
 import GradeI from "../calculate/GradeI";
 import GradeII from "../calculate/GradeII";
-import GradeIII from "../calculate/GradeIII";
-
+// import GradeIII from "../calculate/GradeIII";
+import GradeIV from "../calculate/GradeIV";
 export default function Calculate() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-yellow-100 text-gray-800 font-sans">
@@ -20,6 +20,19 @@ export default function Calculate() {
 
      
       <main className="max-w-6xl mx-auto py-12 px-6 space-y-16">
+        {/* Grade 4–5 Section */}
+        <section
+          id="grade-4-5"
+          className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border-l-8 border-yellow-900 p-8"
+        >
+          <h2 className="text-2xl font-bold text-yellow-900 mb-4">
+            📕 Grade 4 & 5
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Enter marks for all three terms — Quarterly (Q), Half-Yearly (H), and Annual (A).
+          </p>
+          <GradeIV />
+        </section>
         {/* Grade 6–7 Section */}
         <section
           id="grade-6-7"
@@ -48,19 +61,7 @@ export default function Calculate() {
           <GradeII />
         </section>
 
-        {/* Grade 11–12 Section */}
-        <section
-          id="grade-11-12"
-          className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border-l-8 border-yellow-600 p-8"
-        >
-          <h2 className="text-2xl font-bold text-yellow-600 mb-4">
-            📒 Grade 11 & 12
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Manage and compute senior-grade subject marks with automatic percentage and grading.
-          </p>
-          <GradeIII />
-        </section>
+        
       </main>
 
       {/* ===== FOOTER ===== */}
@@ -72,3 +73,6 @@ export default function Calculate() {
     </div>
   );
 }
+
+
+// 

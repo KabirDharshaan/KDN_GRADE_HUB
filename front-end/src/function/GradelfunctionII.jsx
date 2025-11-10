@@ -148,7 +148,7 @@ export default function Grade6and7MarkRegister() {
   return (
     <div className="min-h-screen w-full bg-yellow-50 p-6 overflow-x-auto">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        6 & 7 Grade - Marks Register (Q, H, A)
+        Grade 8, 9 & 10 - Marks Register (Q, H, A)
       </h2>
 
       <div className="flex justify-center items-center mb-6 gap-3">
